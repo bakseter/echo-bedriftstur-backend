@@ -38,24 +38,13 @@ migrateDb = do
 
 connString :: Config -> ConnectionString
 connString env =
-    --if dbIsDev env then
-        foldr1 BS.append
-            [ "host=" ,     dbHost env ,    " "
-            , "port=5432" ,                 " "
-            , "user=" ,     dbUser env ,    " "
-            , "dbname=" ,   dbName env ,    " "
-            , "password=" , dbPassword env
-            ]
-{-
-    else
-        foldr1 BS.append
-            [ "postgres://",    dbName env
-            , "?host=" ,        dbHost env
-            , "&user=" ,        dbUser env
-            , "&password=" ,    dbPassword env
-            , "&sslmode=" ,     "disable"
-            ]
--}
+    foldr1 BS.append
+        [ "host=" ,     dbHost env ,    " "
+        , "port=5432" ,                 " "
+        , "user=" ,     dbUser env ,    " "
+        , "dbname=" ,   dbName env ,    " "
+        , "password=" , dbPassword env
+        ]
 
 
 -- Run a SQL action in the database.

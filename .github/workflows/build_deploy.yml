@@ -1,4 +1,4 @@
-name: Build & deploy
+name: Build & deploy to Heroku
 
 on:
   push:
@@ -16,3 +16,15 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
+          docker_build_args: |
+            POSTGRES_PASSWORD
+            POSTGRES_USER
+            POSTGRES_DB
+            POSTGRES_HOST
+            API_KEY_1
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          API_KEY_1: ${{ secrets.API_KEY_1 }}
