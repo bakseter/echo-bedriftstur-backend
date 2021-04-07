@@ -1,0 +1,13 @@
+.git
+.gitignore
+
+.stack-work
+*.cabal
+hie.yaml
+
+scripts/
+plan/
+
+README.md
+LICENSE
+.stylish-haskell.yaml

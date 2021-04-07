@@ -1,0 +1,88 @@
+name:                echo-bedriftstur-backend
+version:             0.1.0.0
+github:              "bakseter/echo-bedriftstur-backend"
+license:             BSD3
+author:              "Andreas Salhus Bakseter"
+maintainer:          "andreas.bakseter@echo.uib.no"
+copyright:           "2021 Andreas Salhus Bakseter"
+
+extra-source-files:
+- README.md
+
+# Metadata used when publishing your package
+# synopsis:            Backend for the website of echo bedriftstur.
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/bakseter/echo-bedriftstur-backend#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- servant-server
+- text
+- time
+- mtl
+- persistent
+- persistent-mtl
+- persistent-template
+- persistent-postgresql
+- postgresql-simple
+- aeson
+- monad-logger
+- warp
+- wai-middleware-throttle
+- wai-cors
+- wai
+- clock
+- tasty
+- tasty-hunit
+- dotenv
+- bytestring
+- unliftio
+- password
+- password-instances
+
+library:
+  source-dirs: src
+
+executables:
+  echo-bedriftstur-backend-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -W
+    - -Wall
+    - -Werror
+    - -Wunrecognised-warning-flags
+    - -Wcompat
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wredundant-constraints
+    - -Wname-shadowing
+    dependencies:
+    - echo-bedriftstur-backend
+
+tests:
+  echo-bedriftstur-backend-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -W
+    - -Wall
+    - -Werror
+    - -Wunrecognised-warning-flags
+    - -Wcompat
+    - -Wincomplete-record-updates
+    - -Wincomplete-uni-patterns
+    - -Wredundant-constraints
+    - -Wname-shadowing
+    dependencies:
+    - echo-bedriftstur-backend
