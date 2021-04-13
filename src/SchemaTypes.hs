@@ -12,8 +12,6 @@ import           GHC.Generics                (Generic)
 import qualified Text.Read                   as T (readMaybe)
 
 
--- DEGREE
---
 -- Custom type for a students degree.
 
 data Degree
@@ -27,19 +25,19 @@ data Degree
     | INF
     | PROG
     | POST
-    | ÅRMNINF
     | MISC
-    deriving (Generic, Read, Eq, Show)
+    deriving (Eq, Generic, Read, Show)
 
 
 instance FromJSON Degree
 instance ToJSON Degree
 
 
--- How to turn Degree to and from the interal type used by Persist
+
+-- How to turn Degree to and from the interal type used by Persist.
 
 instance PersistField Degree where
-    -- Use show on Degree and wrap it in PersistText
+    -- Use show on Degree and wrap it in PersistText.
 
     toPersistValue val = PersistText $ pack $ show val
 
@@ -54,6 +52,7 @@ instance PersistField Degree where
             Nothing ->
                 Left $ pack "Cannot convert from PersistValue to Degree; failed on read."
     fromPersistValue _ = Left $ pack "Cannot convert from PersistValue to Degree; not PersistText."
+
 
 
 -- What SQL datatype the Degree type should be stored as in our database.

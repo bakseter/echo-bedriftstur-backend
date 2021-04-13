@@ -14,17 +14,14 @@ import           UnliftIO               hiding (Handler)
 -- ByteString is more or less the same as a normal String.
 
 data Config = Config
-    { dbName     :: BS.ByteString
-    , dbHost     :: BS.ByteString
-    , dbUser     :: BS.ByteString
-    , dbPassword :: BS.ByteString
-    , dbIsDev    :: Bool
-    , apiKeys    :: [Text]
+    { dbUrl   :: Maybe BS.ByteString
+    , apiKeys :: [Text]
     }
     deriving (Eq, Show)
 
-newtype AppM a = AppM {runAppM :: SqlQueryT (ReaderT Config IO) a}
-    deriving (Functor, Applicative, Monad, MonadIO, MonadSqlQuery)
+newtype AppM a
+    = AppM { runAppM :: SqlQueryT (ReaderT Config IO) a }
+    deriving (Applicative, Functor, Monad, MonadIO, MonadSqlQuery)
 
 
 instance MonadUnliftIO AppM where
