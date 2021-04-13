@@ -45,9 +45,6 @@ degreeReadShow =
         , testCase "read composed with show is the identity on Degree (POST)" $
             assertBool "read composed with show is NOT the identity on Degree (POST)" $
                 (read . show) POST == POST
-        , testCase "read composed with show is the identity on Degree (ÅRMNINF)" $
-            assertBool "read composed with show is NOT the identity on Degree (ÅRMNINF)" $
-                (read . show) ÅRMNINF == ÅRMNINF
         , testCase "read composed with show is the identity on Degree (MISC)" $
             assertBool "read composed with show is NOT the identity on Degree (MISC)" $
                 (read . show) MISC == MISC
@@ -88,9 +85,6 @@ degreeShowRead =
         , testCase "show composed with read is the identity on a valid string (POST)" $
             assertBool "show composed with read is NOT the identity on a valid string (POST)" $
                 (show . (\x -> read x :: Degree)) "POST" == "POST"
-        , testCase "show composed with read is the identity on a valid string (ÅRMNINF)" $
-            assertBool "show composed with read is NOT the identity on a valid string (ÅRMNINF)" $
-                (show . (\x -> read x :: Degree)) "ÅRMNINF" == "ÅRMNINF"
         , testCase "show composed with read is the identity on a valid string (MISC)" $
             assertBool "show composed with read is NOT the identity on a valid string" $
                 (show . (\x -> read x :: Degree)) "MISC" == "MISC"

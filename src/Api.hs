@@ -22,25 +22,30 @@ import           Servant
 import           UnliftIO                      (Exception, MonadUnliftIO, try,
                                                 withRunInIO, wrappedWithRunInIO)
 
+
 data UnsafeAccount = UnsafeAccount
     { uaEmail    :: String
     , uaPassword :: String
-    } deriving Generic
+    }
+    deriving (Generic)
 
 instance FromJSON UnsafeAccount
 instance ToJSON UnsafeAccount
 
+
+
 data CompleteAccount = CompleteAccount
     { caUnsafeAccount :: UnsafeAccount
     , caUserInfo      :: UserInfo
-    } deriving Generic
+    }
+    deriving (Generic)
 
 instance FromJSON CompleteAccount
 instance ToJSON CompleteAccount
 
 
--- API
 
+-- API
 
 -- The endpoints of our API.
 
@@ -59,15 +64,18 @@ type API =
                         )
 
 
+
 -- This is needed for some reason.
 
 api :: Proxy API
 api = Proxy
 
 
+
 -- The monad stack used by our API endpoints.
 
 type HandlerM = ReaderT Config Handler
+
 
 
 -- Turn our HandlerM stack into the Handler monad.
@@ -76,32 +84,36 @@ runHandlerM :: Config -> HandlerM a -> Handler a
 runHandlerM conf rt = runReaderT rt conf
 
 
+
 -- Combine all the endpoints.
 
 server :: ServerT API HandlerM
 server =
-    (createAccount
-    :<|>    (updateUserInfo     :<|> getUserInfo)
-    :<|>    (submitRegistration :<|> getRegistration)
-
-    ) :<|>
-    (getAllAccounts :<|> getAllUserInfo :<|> getAllRegistrations)
-
+  ( createAccount
+      :<|> (updateUserInfo :<|> getUserInfo)
+      :<|> (submitRegistration :<|> getRegistration)
+  )
+    :<|> (getAllAccounts :<|> getAllUserInfo :<|> getAllRegistrations)
 
 
+
+--
 -- HANDLERS
 --
 -- These are the handlers for each endpoint of our API.
 -- They all use the HandlerM monad stack; this gives us the
 -- Reader monad where our config is stored.
 --
+-- Right = Success
+-- Left = Failure
+--
 -- Example of return types:
 --    A type of `HandlerM (Key Registration)` responds with `Key Registration`
 --    to the HTTP request. A type of `HandlerM NoContent` responds with nothing.
 
-
 createAccount :: CompleteAccount -> HandlerM NoContent
 createAccount (CompleteAccount (UnsafeAccount email unsafePwd) userInfo) = do
+    -- Hash the plain-text password, and make a new Account
     safePwd <- hashPassword $ mkPassword $ pack unsafePwd
     let acc = Account email safePwd
     result <- runInHandlerM $ DB.createAccount acc userInfo
@@ -109,7 +121,7 @@ createAccount (CompleteAccount (UnsafeAccount email unsafePwd) userInfo) = do
         Right _ ->
             return NoContent
         Left (e :: SqlError) ->
-           throwError $ err500 {errBody = toErrBody e}
+            throwError $ err500 { errBody = toErrBody e }
 
 
 
@@ -118,14 +130,15 @@ updateUserInfo userInfo = do
     result <- runInHandlerM $ DB.updateUserInfo userInfo
     case result of
         Right _ ->
-            -- Return nothing.
             return NoContent
         Left (e :: SqlError) ->
-            throwError $ err500 {errBody = toErrBody e}
+            throwError $ err500 { errBody = toErrBody e }
+
 
 
 getUserInfo :: HandlerM UserInfo
 getUserInfo = undefined
+
 
 
 submitRegistration :: Registration -> HandlerM NoContent
@@ -133,14 +146,15 @@ submitRegistration reg = do
     result <- runInHandlerM $ DB.submitRegistration reg
     case result of
         Right _ ->
-            -- Return nothing.
             return NoContent
         Left (e :: SqlError) ->
-            throwError $ err500 {errBody = toErrBody e}
+            throwError $ err500 { errBody = toErrBody e }
+
 
 
 getRegistration :: HandlerM Registration
 getRegistration = undefined
+
 
 
 getAllAccounts :: Maybe String -> HandlerM [UnsafeAccount]
@@ -151,11 +165,13 @@ getAllAccounts _ = do
             -- Map entityVal over accounts to extract values from internal Persist values.
             return $ toUnsafeAcc . entityVal <$> accounts
         Left (e :: SqlError) ->
-            throwError $ err500 { errBody = toErrBody e }
+            throwError $ err500 {errBody = toErrBody e}
+
 
 
 toUnsafeAcc :: Account -> UnsafeAccount
 toUnsafeAcc (Account email _) = UnsafeAccount email "***"
+
 
 
 getAllUserInfo :: Maybe String -> HandlerM [UserInfo]
@@ -167,6 +183,7 @@ getAllUserInfo _ = do
             return $ entityVal <$> userInfo
         Left (e :: SqlError) ->
             throwError $ err500 {errBody = toErrBody e}
+
 
 
 getAllRegistrations :: Maybe String -> HandlerM [Registration]

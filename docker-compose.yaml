@@ -1,25 +1,27 @@
 version: '3.9'
 services:
   database:
-    image: postgres:13
+    image: postgres:latest
     restart: always
-    expose:
-      - '5432'
+    ports:
+      - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: schmassord
-      POSTGRES_USER: postgres
-      POSRGRES_DB: postgres
+      POSTGRES_PASSWORD: 'secretpassword'
+      POSTGRES_USER: 'postgres'
+      POSRGRES_DB: 'postgres'
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - '8080:8080'
+
   backend:
     build: .
     image: echo-bedriftstur-backend:latest
     depends_on:
       - database
     ports:
-      - '8080:8080'
+      - '5000:5000'
     environment:
-      POSTGRES_PASSWORD: schmassord
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_HOST: 0.0.0.0
       API_KEY_1: test
-      DEVELOPMENT: jadda
