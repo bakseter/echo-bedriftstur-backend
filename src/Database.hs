@@ -7,14 +7,17 @@ import           App
 import           Control.Monad.Logger
 import           Control.Monad.Reader
 import qualified Data.ByteString.Char8       as BS
+import           Data.Maybe
 import           Data.Text                   (Text)
 import           Database.Persist.Monad
 import           Database.Persist.Postgresql (ConnectionString, Entity, Key,
                                               withPostgresqlPool)
+
 import           Database.Persist.Sql        ((==.))
 import           Database.PostgreSQL.Simple  (SqlError)
 import           Schema
 import           UnliftIO                    (Exception, Typeable, try)
+
 
 
 -- Migrates the database.
@@ -38,24 +41,13 @@ migrateDb = do
 
 connString :: Config -> ConnectionString
 connString env =
-    --if dbIsDev env then
-        foldr1 BS.append
-            [ "host=" ,     dbHost env ,    " "
-            , "port=5432" ,                 " "
-            , "user=" ,     dbUser env ,    " "
-            , "dbname=" ,   dbName env ,    " "
-            , "password=" , dbPassword env
-            ]
-{-
-    else
-        foldr1 BS.append
-            [ "postgres://",    dbName env
-            , "?host=" ,        dbHost env
-            , "&user=" ,        dbUser env
-            , "&password=" ,    dbPassword env
-            , "&sslmode=" ,     "disable"
-            ]
--}
+    fromMaybe
+        "host=0.0.0.0 \
+        \port=5432 \
+        \user=postgres \
+        \dbname=postgres \
+        \password=secretpassword"
+        (dbUrl env)
 
 
 -- Run a SQL action in the database.

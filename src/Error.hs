@@ -4,21 +4,17 @@ import           GHC.Exception
 
 
 data DatabaseError
-    = -- When trying to submit a Registration
-      -- to the same Bedpres multiple times.
-      RegistrationAlreadyExists
-    | -- When trying to submit a Registration
-      -- for a Bedpres that does not exist.
-      BedpresDoesNotExist
-    | -- When the Email of a Student is invalid.
-      InvalidEmail
-    | -- When the Degree of a Student is invalid.
-      InvalidDegree
+    -- When trying to submit a Registration
+    -- multiple times.
+    = RegistrationAlreadyExists
+    -- When the Email of an Account is invalid.
+    | InvalidEmail
+    -- When the Degree of an Account is invalid.
+    | InvalidDegree
 
 
 instance Show DatabaseError where
-    show RegistrationAlreadyExists = "Du kan ikke melde deg på samme bedriftspresentasjon flere ganger."
-    show BedpresDoesNotExist = "Bedriftspresentasjonen du prøver å melde deg på finnes ikke."
+    show RegistrationAlreadyExists = "Du kan ikke melde deg på flere ganger."
     show InvalidEmail = "Mailen du skrev inn er ikke gyldig. Vennligst skriv inn en studentmail."
     show InvalidDegree = "Sneaky."
 

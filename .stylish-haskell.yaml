@@ -20,16 +20,16 @@ steps:
   # Currently, this option is not configurable and will format all exports and
   # module declarations to minimize diffs
   #
-    - module_header:
+  # - module_header:
   #     # How many spaces use for indentation in the module header.
-        indent: 4
+  #     indent: 4
   #
   #     # Should export lists be sorted?  Sorting is only performed within the
   #     # export section, as delineated by Haddock comments.
-        sort: true
+  #     sort: true
   #
   #     # See `separate_lists` for the `imports` step.
-        separate_lists: true
+  #     separate_lists: true
 
   # Format record definitions. This is disabled by default.
   #
@@ -40,43 +40,43 @@ steps:
   # - "," in fields is always aligned with "{"
   # - "}" is likewise always aligned with "{"
   #
-    - records:
+  - records:
   #     # How to format equals sign between type constructor and data constructor.
   #     # Possible values:
   #     # - "same_line" -- leave "=" AND data constructor on the same line as the type constructor.
   #     # - "indent N" -- insert a new line and N spaces from the beginning of the next line.
-        equals: "indent 4"
+      equals: "indent 4"
   #
   #     # How to format first field of each record constructor.
   #     # Possible values:
   #     # - "same_line" -- "{" and first field goes on the same line as the data constructor.
   #     # - "indent N" -- insert a new line and N spaces from the beginning of the data constructor
-        first_field: "indent 4"
+      first_field: "indent 4"
   #
   #     # How many spaces to insert between the column with "," and the beginning of the comment in the next line.
-        field_comment: 4
+      field_comment: 0
   #
   #     # How many spaces to insert before "deriving" clause. Deriving clauses are always on separate lines.
-        deriving: 4
+      deriving: 4
   #
   #     # How many spaces to insert before "via" clause counted from indentation of deriving clause
   #     # Possible values:
   #     # - "same_line" -- "via" part goes on the same line as "deriving" keyword.
   #     # - "indent N" -- insert a new line and N spaces from the beginning of "deriving" keyword.
-        via: "indent 4"
+      via: "same_line"
   #
   #     # Sort typeclass names in the "deriving" list alphabetically.
-        sort_deriving: true
+      sort_deriving: true
   #
   #     # Wheter or not to break enums onto several lines
   #     #
   #     # Default: false
-  #     break_enums: false
+      break_enums: true
   #
   #     # Whether or not to break single constructor data types before `=` sign
   #     #
   #     # Default: true
-        break_single_constructors: true
+      break_single_constructors: false
   #
   #     # Whether or not to curry constraints on function.
   #     #
@@ -85,7 +85,7 @@ steps:
   #     # Instead of @allValues :: (Enum a, Bounded a) => Proxy a -> [a]@
   #     #
   #     # Default: false
-        curried_context: false
+      curried_context: false
 
   # Align the right hand side of some elements.  This is quite conservative
   # and only applies to statements where each element occupies a single
@@ -212,7 +212,7 @@ steps:
       #   > import Vector.Instances ()
       #
       # Default: inherit
-      empty_list_align: right_after
+      empty_list_align: inherit
 
       # List padding determines indentation of import list on lines after import.
       # This option affects 'long_list_align'.
@@ -256,7 +256,7 @@ steps:
       #   > import Data.Foo (foo)
       #
       # Default: false
-      space_surround: true
+      space_surround: false
 
       # Enabling this argument will use the new GHC lib parse to format imports.
       #

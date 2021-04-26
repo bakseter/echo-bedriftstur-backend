@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: Deploy to Heroku
+=======
+name: Build & deploy to Heroku
+>>>>>>> 9944421a5fd6db2dc280c76e58bb005cde794cbe
 
 on:
   push:
@@ -15,3 +19,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          usedocker: true
