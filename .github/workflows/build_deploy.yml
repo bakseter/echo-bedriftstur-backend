@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 name: Deploy to Heroku
-=======
-name: Build & deploy to Heroku
->>>>>>> 9944421a5fd6db2dc280c76e58bb005cde794cbe
-
 on:
   push:
     branches:
