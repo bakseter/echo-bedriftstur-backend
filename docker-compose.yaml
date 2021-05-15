@@ -1,21 +1,5 @@
 version: '3.9'
 services:
-  database:
-    image: postgres:latest
-    restart: always
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_PASSWORD: 'secretpassword'
-      POSTGRES_USER: 'postgres'
-      POSRGRES_DB: 'postgres'
-
-  adminer:
-    image: adminer:latest
-    restart: always
-    ports:
-      - '8080:8080'
-
   backend:
     build: .
     image: echo-bedriftstur-backend:latest
@@ -23,5 +7,18 @@ services:
       - database
     ports:
       - '5000:5000'
+    links:
+      - database
     environment:
       API_KEY_1: test
+      DATABASE_HOST: database
+
+  database:
+    image: postgres:13.2-alpine
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: 'secretpassword'
+      POSTGRES_USER: 'postgres'
+      POSRGRES_DB: 'postgres'
