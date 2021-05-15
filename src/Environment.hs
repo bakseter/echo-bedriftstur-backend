@@ -30,9 +30,10 @@ getConfig = do
     args <- keyval <$> getArgs
     env <- getEnvironment
     case map (`lookup` (args ++ env)) envVarKeys of
-            mbDbUrl : keys ->
+            mbDbHost : mbDbUrl : keys ->
                 return $ Just $
                     Config
+                        (BS.pack <$> mbDbHost)
                         (BS.pack <$> mbDbUrl)
                         (T.pack <$> catMaybes keys)
     where
@@ -51,6 +52,6 @@ isDevelopment = isNothing . dbUrl
 
 envVarKeys :: [String]
 envVarKeys =
-    "DATABASE_URL" : [ "API_KEY_" ++ show x | x <- ([1..numApiKeys] :: [Integer]) ]
+    "DATABASE_HOST" : "DATABASE_URL" : [ "API_KEY_" ++ show x | x <- ([1..numApiKeys] :: [Integer]) ]
     where
         numApiKeys = 5

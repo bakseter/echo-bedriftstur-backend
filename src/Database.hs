@@ -41,13 +41,17 @@ migrateDb = do
 
 connString :: Config -> ConnectionString
 connString env =
-    fromMaybe
-        "host=0.0.0.0 \
-        \port=5432 \
-        \user=postgres \
-        \dbname=postgres \
-        \password=secretpassword"
-        (dbUrl env)
+    case (dbHost env, dbUrl env) of
+        (Just host, _) ->
+            "host=" `BS.append` host `BS.append` " \
+            \port=5432 \
+            \user=postgres \
+            \dbname=postgres \
+            \password=secretpassword"
+        (_, Just url) ->
+            url
+        _ ->
+            error "No DATABASE_URL or DATABASE_HOST given."
 
 
 -- Run a SQL action in the database.

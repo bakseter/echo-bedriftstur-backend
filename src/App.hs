@@ -14,7 +14,8 @@ import           UnliftIO               hiding (Handler)
 -- ByteString is more or less the same as a normal String.
 
 data Config = Config
-    { dbUrl   :: Maybe BS.ByteString
+    { dbHost  :: Maybe BS.ByteString
+    , dbUrl   :: Maybe BS.ByteString
     , apiKeys :: [Text]
     }
     deriving (Eq, Show)
